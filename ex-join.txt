@@ -4,6 +4,13 @@ FROM degrees
 JOIN students ON students.degree_id = degrees.id
 WHERE degrees.name= 'Corso di Laurea in Economia';
 
+oppure 
+
+SELECT *
+FROM students
+JOIN degrees ON students.degree_id = degrees.id 
+WHERE degrees.name='Corso di Laurea in Economia';
+
 2. Selezionare tutti i Corsi di Laurea Magistrale del Dipartimento di Neuroscienze
 SELECT *
 FROM departments 
@@ -45,9 +52,10 @@ WHERE departments.name='Dipartimento di Matematica';
 
 7. BONUS: Selezionare per ogni studente quanti tentativi d’esame ha sostenuto per
 superare ciascuno dei suoi esami
-SELECT exam_student.student_id, courses.id, COUNT(exams.id) AS tentativi_esame
+SELECT exam_student.student_id, students.surname, students.name, courses.id AS course_id, courses.name AS course_name, COUNT(exams.id) AS exam_attempts
 FROM exam_student
 JOIN exams ON exam_student.exam_id = exams.id
 JOIN courses ON exams.course_id = courses.id 
-GROUP BY exam_student.student_id, courses.id 
+JOIN students ON exam_student.student_id = students.id
+GROUP BY exam_student.student_id, students.surname, students.name, courses.id, courses.name
 ORDER BY exam_student.student_id;
